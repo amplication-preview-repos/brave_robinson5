@@ -19,6 +19,7 @@ import { IoTDeviceModule } from "./ioTDevice/ioTDevice.module";
 import { HouseModule } from "./house/house.module";
 import { ReadingModule } from "./reading/reading.module";
 import { UserModule } from "./user/user.module";
+import { CarModule } from "./car/car.module";
 import { WeatherModule } from "./weather/weather.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -47,6 +48,7 @@ import { AuthModule } from "./auth/auth.module";
     HouseModule,
     ReadingModule,
     UserModule,
+    CarModule,
     WeatherModule,
     HealthModule,
     PrismaModule,

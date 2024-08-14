@@ -26,6 +26,9 @@ import { Reading } from "./Reading";
 import { ReadingFindManyArgs } from "./ReadingFindManyArgs";
 import { ReadingWhereUniqueInput } from "./ReadingWhereUniqueInput";
 import { ReadingUpdateInput } from "./ReadingUpdateInput";
+import { CarFindManyArgs } from "../../car/base/CarFindManyArgs";
+import { Car } from "../../car/base/Car";
+import { CarWhereUniqueInput } from "../../car/base/CarWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -288,5 +291,118 @@ export class ReadingControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/cars")
+  @ApiNestedQuery(CarFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Car",
+    action: "read",
+    possession: "any",
+  })
+  async findCars(
+    @common.Req() request: Request,
+    @common.Param() params: ReadingWhereUniqueInput
+  ): Promise<Car[]> {
+    const query = plainToClass(CarFindManyArgs, request.query);
+    const results = await this.service.findCars(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+        make: true,
+        model: true,
+
+        reading: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        vin: true,
+        year: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/cars")
+  @nestAccessControl.UseRoles({
+    resource: "Reading",
+    action: "update",
+    possession: "any",
+  })
+  async connectCars(
+    @common.Param() params: ReadingWhereUniqueInput,
+    @common.Body() body: CarWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      cars: {
+        connect: body,
+      },
+    };
+    await this.service.updateReading({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/cars")
+  @nestAccessControl.UseRoles({
+    resource: "Reading",
+    action: "update",
+    possession: "any",
+  })
+  async updateCars(
+    @common.Param() params: ReadingWhereUniqueInput,
+    @common.Body() body: CarWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      cars: {
+        set: body,
+      },
+    };
+    await this.service.updateReading({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/cars")
+  @nestAccessControl.UseRoles({
+    resource: "Reading",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectCars(
+    @common.Param() params: ReadingWhereUniqueInput,
+    @common.Body() body: CarWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      cars: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateReading({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

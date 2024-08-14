@@ -1,6 +1,8 @@
+import { Car } from "../car/Car";
 import { JsonValue } from "type-fest";
 
 export type User = {
+  cars?: Array<Car>;
   createdAt: Date;
   email: string | null;
   firstName: string | null;

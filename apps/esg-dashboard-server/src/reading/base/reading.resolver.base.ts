@@ -26,6 +26,8 @@ import { ReadingFindUniqueArgs } from "./ReadingFindUniqueArgs";
 import { CreateReadingArgs } from "./CreateReadingArgs";
 import { UpdateReadingArgs } from "./UpdateReadingArgs";
 import { DeleteReadingArgs } from "./DeleteReadingArgs";
+import { CarFindManyArgs } from "../../car/base/CarFindManyArgs";
+import { Car } from "../../car/base/Car";
 import { EsgMetric } from "../../esgMetric/base/EsgMetric";
 import { IoTDevice } from "../../ioTDevice/base/IoTDevice";
 import { ReadingService } from "../reading.service";
@@ -170,6 +172,26 @@ export class ReadingResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Car], { name: "cars" })
+  @nestAccessControl.UseRoles({
+    resource: "Car",
+    action: "read",
+    possession: "any",
+  })
+  async findCars(
+    @graphql.Parent() parent: Reading,
+    @graphql.Args() args: CarFindManyArgs
+  ): Promise<Car[]> {
+    const results = await this.service.findCars(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)

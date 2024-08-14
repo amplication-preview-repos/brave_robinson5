@@ -11,9 +11,10 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { EsgMetricWhereUniqueInput } from "../../esgMetric/base/EsgMetricWhereUniqueInput";
+import { CarListRelationFilter } from "../../car/base/CarListRelationFilter";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
+import { EsgMetricWhereUniqueInput } from "../../esgMetric/base/EsgMetricWhereUniqueInput";
 import { StringFilter } from "../../util/StringFilter";
 import { IoTDeviceWhereUniqueInput } from "../../ioTDevice/base/IoTDeviceWhereUniqueInput";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
@@ -21,6 +22,18 @@ import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 
 @InputType()
 class ReadingWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => CarListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => CarListRelationFilter)
+  @IsOptional()
+  @Field(() => CarListRelationFilter, {
+    nullable: true,
+  })
+  cars?: CarListRelationFilter;
+
   @ApiProperty({
     required: false,
     type: () => EsgMetricWhereUniqueInput,

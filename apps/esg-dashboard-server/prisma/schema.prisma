@@ -36,6 +36,7 @@ model House {
 }
 
 model Reading {
+  cars        Car[]
   createdAt   DateTime   @default(now())
   esgMetric   EsgMetric? @relation(fields: [esgMetricId], references: [id])
   esgMetricId String?    @db.ObjectId
@@ -48,6 +49,7 @@ model Reading {
 }
 
 model User {
+  cars      Car[]
   createdAt DateTime @default(now())
   email     String?  @unique
   firstName String?
@@ -57,4 +59,18 @@ model User {
   roles     Json
   updatedAt DateTime @updatedAt
   username  String   @unique
+}
+
+model Car {
+  createdAt DateTime @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  make      String?
+  model     String?
+  reading   Reading? @relation(fields: [readingId], references: [id])
+  readingId String?  @db.ObjectId
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @db.ObjectId
+  vin       String?
+  year      Int?
 }

@@ -11,10 +11,11 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+import { Car } from "../../car/base/Car";
 import {
-  IsDate,
   ValidateNested,
   IsOptional,
+  IsDate,
   IsString,
   IsNumber,
   Min,
@@ -26,6 +27,15 @@ import { IoTDevice } from "../../ioTDevice/base/IoTDevice";
 
 @ObjectType()
 class Reading {
+  @ApiProperty({
+    required: false,
+    type: () => [Car],
+  })
+  @ValidateNested()
+  @Type(() => Car)
+  @IsOptional()
+  cars?: Array<Car>;
+
   @ApiProperty({
     required: true,
   })

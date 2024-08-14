@@ -11,7 +11,7 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { EsgMetricWhereUniqueInput } from "../../esgMetric/base/EsgMetricWhereUniqueInput";
+import { CarCreateNestedManyWithoutReadingsInput } from "./CarCreateNestedManyWithoutReadingsInput";
 import {
   ValidateNested,
   IsOptional,
@@ -21,10 +21,23 @@ import {
   Max,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { EsgMetricWhereUniqueInput } from "../../esgMetric/base/EsgMetricWhereUniqueInput";
 import { IoTDeviceWhereUniqueInput } from "../../ioTDevice/base/IoTDeviceWhereUniqueInput";
 
 @InputType()
 class ReadingCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => CarCreateNestedManyWithoutReadingsInput,
+  })
+  @ValidateNested()
+  @Type(() => CarCreateNestedManyWithoutReadingsInput)
+  @IsOptional()
+  @Field(() => CarCreateNestedManyWithoutReadingsInput, {
+    nullable: true,
+  })
+  cars?: CarCreateNestedManyWithoutReadingsInput;
+
   @ApiProperty({
     required: false,
     type: () => EsgMetricWhereUniqueInput,

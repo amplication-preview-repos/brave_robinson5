@@ -14,6 +14,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import {
   Prisma,
   Reading as PrismaReading,
+  Car as PrismaCar,
   EsgMetric as PrismaEsgMetric,
   IoTDevice as PrismaIoTDevice,
 } from "@prisma/client";
@@ -41,6 +42,17 @@ export class ReadingServiceBase {
   }
   async deleteReading(args: Prisma.ReadingDeleteArgs): Promise<PrismaReading> {
     return this.prisma.reading.delete(args);
+  }
+
+  async findCars(
+    parentId: string,
+    args: Prisma.CarFindManyArgs
+  ): Promise<PrismaCar[]> {
+    return this.prisma.reading
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .cars(args);
   }
 
   async getEsgMetric(parentId: string): Promise<PrismaEsgMetric | null> {

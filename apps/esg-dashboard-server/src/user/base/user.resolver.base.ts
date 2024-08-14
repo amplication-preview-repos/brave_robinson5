@@ -26,6 +26,8 @@ import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { CreateUserArgs } from "./CreateUserArgs";
 import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
+import { CarFindManyArgs } from "../../car/base/CarFindManyArgs";
+import { Car } from "../../car/base/Car";
 import { UserService } from "../user.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => User)
@@ -130,5 +132,25 @@ export class UserResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Car], { name: "cars" })
+  @nestAccessControl.UseRoles({
+    resource: "Car",
+    action: "read",
+    possession: "any",
+  })
+  async findCars(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: CarFindManyArgs
+  ): Promise<Car[]> {
+    const results = await this.service.findCars(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }
