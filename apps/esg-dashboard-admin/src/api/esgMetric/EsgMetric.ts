@@ -6,5 +6,6 @@ export type EsgMetric = {
   id: string;
   metricName: string | null;
   readings?: Array<Reading>;
+  typeField?: "Option1" | null;
   updatedAt: Date;
 };

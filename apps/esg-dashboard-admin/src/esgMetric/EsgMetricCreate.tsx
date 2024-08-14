@@ -7,6 +7,7 @@ import {
   TextInput,
   ReferenceArrayInput,
   SelectArrayInput,
+  SelectInput,
 } from "react-admin";
 
 import { ReadingTitle } from "../reading/ReadingTitle";
@@ -25,6 +26,14 @@ export const EsgMetricCreate = (props: CreateProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={ReadingTitle} />
         </ReferenceArrayInput>
+        <SelectInput
+          source="typeField"
+          label="type"
+          choices={[{ label: "Option 1", value: "Option1" }]}
+          optionText="label"
+          allowEmpty
+          optionValue="value"
+        />
       </SimpleForm>
     </Create>
   );

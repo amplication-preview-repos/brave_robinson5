@@ -5,5 +5,6 @@ export type EsgMetricOrderByInput = {
   description?: SortOrder;
   id?: SortOrder;
   metricName?: SortOrder;
+  typeField?: SortOrder;
   updatedAt?: SortOrder;
 };

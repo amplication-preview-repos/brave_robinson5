@@ -13,9 +13,10 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
 import { ReadingListRelationFilter } from "../../reading/base/ReadingListRelationFilter";
+import { EnumEsgMetricTypeField } from "./EnumEsgMetricTypeField";
 
 @InputType()
 class EsgMetricWhereInput {
@@ -63,6 +64,17 @@ class EsgMetricWhereInput {
     nullable: true,
   })
   readings?: ReadingListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumEsgMetricTypeField,
+  })
+  @IsEnum(EnumEsgMetricTypeField)
+  @IsOptional()
+  @Field(() => EnumEsgMetricTypeField, {
+    nullable: true,
+  })
+  typeField?: "Option1";
 }
 
 export { EsgMetricWhereInput as EsgMetricWhereInput };

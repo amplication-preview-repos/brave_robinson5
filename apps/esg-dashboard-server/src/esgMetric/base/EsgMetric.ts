@@ -17,9 +17,11 @@ import {
   MaxLength,
   IsOptional,
   ValidateNested,
+  IsEnum,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Reading } from "../../reading/base/Reading";
+import { EnumEsgMetricTypeField } from "./EnumEsgMetricTypeField";
 
 @ObjectType()
 class EsgMetric {
@@ -71,6 +73,17 @@ class EsgMetric {
   @Type(() => Reading)
   @IsOptional()
   readings?: Array<Reading>;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumEsgMetricTypeField,
+  })
+  @IsEnum(EnumEsgMetricTypeField)
+  @IsOptional()
+  @Field(() => EnumEsgMetricTypeField, {
+    nullable: true,
+  })
+  typeField?: "Option1" | null;
 
   @ApiProperty({
     required: true,

@@ -7,4 +7,5 @@ export type EsgMetricWhereInput = {
   id?: StringFilter;
   metricName?: StringNullableFilter;
   readings?: ReadingListRelationFilter;
+  typeField?: "Option1";
 };

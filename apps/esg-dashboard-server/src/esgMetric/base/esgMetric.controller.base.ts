@@ -58,6 +58,7 @@ export class EsgMetricControllerBase {
         description: true,
         id: true,
         metricName: true,
+        typeField: true,
         updatedAt: true,
       },
     });
@@ -84,6 +85,7 @@ export class EsgMetricControllerBase {
         description: true,
         id: true,
         metricName: true,
+        typeField: true,
         updatedAt: true,
       },
     });
@@ -111,6 +113,7 @@ export class EsgMetricControllerBase {
         description: true,
         id: true,
         metricName: true,
+        typeField: true,
         updatedAt: true,
       },
     });
@@ -147,6 +150,7 @@ export class EsgMetricControllerBase {
           description: true,
           id: true,
           metricName: true,
+          typeField: true,
           updatedAt: true,
         },
       });
@@ -182,6 +186,7 @@ export class EsgMetricControllerBase {
           description: true,
           id: true,
           metricName: true,
+          typeField: true,
           updatedAt: true,
         },
       });

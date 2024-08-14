@@ -8,12 +8,13 @@ generator client {
 }
 
 model EsgMetric {
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime                @default(now())
   description String?
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
   metricName  String?
   readings    Reading[]
-  updatedAt   DateTime  @updatedAt
+  typeField   EnumEsgMetricTypeField?
+  updatedAt   DateTime                @updatedAt
 }
 
 model IoTDevice {
@@ -73,4 +74,8 @@ model Car {
   userId    String?  @db.ObjectId
   vin       String?
   year      Int?
+}
+
+enum EnumEsgMetricTypeField {
+  Option1
 }

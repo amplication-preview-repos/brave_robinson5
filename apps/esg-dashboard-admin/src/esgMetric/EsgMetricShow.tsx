@@ -22,6 +22,7 @@ export const EsgMetricShow = (props: ShowProps): React.ReactElement => {
         <TextField label="description" source="description" />
         <TextField label="ID" source="id" />
         <TextField label="metricName" source="metricName" />
+        <TextField label="type" source="typeField" />
         <DateField source="updatedAt" label="Updated At" />
         <ReferenceManyField
           reference="Reading"

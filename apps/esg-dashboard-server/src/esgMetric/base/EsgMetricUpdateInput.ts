@@ -16,9 +16,11 @@ import {
   MaxLength,
   IsOptional,
   ValidateNested,
+  IsEnum,
 } from "class-validator";
 import { ReadingUpdateManyWithoutEsgMetricsInput } from "./ReadingUpdateManyWithoutEsgMetricsInput";
 import { Type } from "class-transformer";
+import { EnumEsgMetricTypeField } from "./EnumEsgMetricTypeField";
 
 @InputType()
 class EsgMetricUpdateInput {
@@ -57,6 +59,17 @@ class EsgMetricUpdateInput {
     nullable: true,
   })
   readings?: ReadingUpdateManyWithoutEsgMetricsInput;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumEsgMetricTypeField,
+  })
+  @IsEnum(EnumEsgMetricTypeField)
+  @IsOptional()
+  @Field(() => EnumEsgMetricTypeField, {
+    nullable: true,
+  })
+  typeField?: "Option1" | null;
 }
 
 export { EsgMetricUpdateInput as EsgMetricUpdateInput };
