@@ -1,0 +1,60 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model EsgMetric {
+  createdAt   DateTime  @default(now())
+  description String?
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  metricName  String?
+  readings    Reading[]
+  updatedAt   DateTime  @updatedAt
+}
+
+model IoTDevice {
+  createdAt DateTime  @default(now())
+  house     House?    @relation(fields: [houseId], references: [id])
+  houseId   String?   @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  readings  Reading[]
+  typeField String?
+  updatedAt DateTime  @updatedAt
+}
+
+model House {
+  address    String?
+  createdAt  DateTime    @default(now())
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  ioTDevices IoTDevice[]
+  owner      String?
+  updatedAt  DateTime    @updatedAt
+}
+
+model Reading {
+  createdAt   DateTime   @default(now())
+  esgMetric   EsgMetric? @relation(fields: [esgMetricId], references: [id])
+  esgMetricId String?    @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  ioTDevice   IoTDevice? @relation(fields: [ioTDeviceId], references: [id])
+  ioTDeviceId String?    @db.ObjectId
+  timestamp   DateTime?
+  updatedAt   DateTime   @updatedAt
+  value       Float?
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
